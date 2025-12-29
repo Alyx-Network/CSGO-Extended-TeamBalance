@@ -71,7 +71,7 @@ You can customize the plugin's chat messages by modifying the color codes at the
 ```
 
 **Reference:** [SourceMod Color Chart](https://i.imgur.com/q2wb8Cu.png)
-All cooldown values in the configuration are specified in seconds. For example, `180.0` equals 3 minutes.
+- All cooldown values in the configuration are specified in seconds. For example, `180.0` equals 3 minutes.
 
 ## How It Works
 
