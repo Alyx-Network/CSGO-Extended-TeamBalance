@@ -57,6 +57,22 @@ Immunity from auto-balance for newly joined players in seconds (default: 60)
 sm_teambalance_join_immunity 60.0
 ```
 
+## Customization
+
+### Message Styling
+
+You can customize the plugin's chat messages by modifying the color codes at the top of the source file. The plugin uses SourceMod color codes for formatting.
+
+```sourcepawn
+#define PREFIX " \x0ETEAM"
+#define COLOR_PRIMARY "\x0E"
+#define COLOR_SECONDARY "\x08"
+#define SEPARATOR "▪"
+```
+
+**Reference:** [SourceMod Color Chart](https://i.imgur.com/q2wb8Cu.png)
+All cooldown values in the configuration are specified in seconds. For example, `180.0` equals 3 minutes.
+
 ## How It Works
 
 ### Team Swapping
@@ -94,4 +110,4 @@ Prevents players from joining teams if it would create an imbalance greater than
 
 ## Support
 
-For issues or questions, visit https://www.alyx.ro/
+For issues or questions, visit https://alyx.ro/
