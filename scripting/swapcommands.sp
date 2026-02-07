@@ -26,7 +26,6 @@ ConVar g_cvMinPlayersForBalance;
 ConVar g_cvBlockWarmupSwitch;
 ConVar g_cvAutoBalance;
 ConVar g_cvCmdCooldown;
-ConVar g_cvManualCooldown;
 ConVar g_cvBalanceJoinImmunity;
 
 public Plugin myinfo =
@@ -57,7 +56,6 @@ public void OnPluginStart()
     g_cvAutoBalance = CreateConVar("sm_teambalance_enable", "1", "Enable automatic team balancing at round start", _, true, 0.0, true, 1.0);
 
     g_cvCmdCooldown = CreateConVar("sm_teamswap_cmd_cooldown", "180.0", "Cooldown between !joint/!joinct commands (in seconds)", _, true, 0.0);
-    g_cvManualCooldown = CreateConVar("sm_teamswap_manual_cooldown", "60.0", "Cooldown between manual team changes via jointeam (in seconds)", _, true, 0.0);
     g_cvBalanceJoinImmunity = CreateConVar("sm_teambalance_join_immunity", "60.0", "Immunity from auto-balance for newly joined players (seconds)", _, true, 0.0);
 
     AutoExecConfig(true, "swapcommands");
@@ -334,19 +332,6 @@ public Action Command_JoinTeam(int client, const char[] command, int argc)
         }
     }
 
-    float cooldown = g_cvManualCooldown.FloatValue;
-    if (g_bInRoundPrestart)
-        cooldown *= 0.5;
-
-    if (g_fLastManualTeamChange[client] > 0.0 && GetGameTime() - g_fLastManualTeamChange[client] < cooldown)
-    {
-        float remainingTime = cooldown - (GetGameTime() - g_fLastManualTeamChange[client]);
-        char timeStr[64];
-        FormatTimeString(remainingTime, timeStr, sizeof(timeStr));
-        Message(client, "Please wait %s%s%s before manually switching teams again.", COLOR_PRIMARY, timeStr, COLOR_SECONDARY);
-        return Plugin_Stop;
-    }
-
     return Plugin_Continue;
 }
 
@@ -391,7 +376,6 @@ public Action Event_PlayerTeam(Event event, const char[] name, bool dontBroadcas
 
     if (!(g_bSwitchingTeam[client] || g_bPendingSwap[client] || g_bInRoundPrestart))
     {
-        g_fLastManualTeamChange[client] = GetGameTime();
         g_bWasAutoBalanced[client] = false;
 
         char auth[32];
